@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:test/shared/widgets/store_list.dart';
+import 'package:test/shared/widgets/build_store_list.dart';
+import 'package:test/shared/widgets/data/customer_data.dart';
+import 'package:test/shared/widgets/data/store_data.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final CustomerModel customer;
+
+  const SearchScreen({
+    Key? key,
+    required this.customer,
+  }) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  late List<Store> stores;
+  late List<StoreModel> stores;
   String query = '';
 
   final searchController = TextEditingController();
@@ -24,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void searchStore(String query) {
     final stores = storeList.where((store) {
-      final nameLower = store.name!.toLowerCase();
+      final nameLower = store.name.toLowerCase();
       final searchLower = query.toLowerCase();
 
       return nameLower.contains(searchLower);
@@ -218,14 +225,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
     if (stores.isNotEmpty) {
       content = SizedBox(
-        height: 70 * stores.length.toDouble(),
+        height: 80 * stores.length.toDouble(),
         child: Expanded(
           child: ListView.builder(
             itemCount: stores.length,
             itemBuilder: (context, index) {
               final store = stores[index];
 
-              return buildStore(store);
+              return BuildStoreList(
+                store: store,
+                onTap: () {},
+              );
             },
           ),
         ),
@@ -237,7 +247,7 @@ class _SearchScreenState extends State<SearchScreen> {
             Image.asset('images/not_found.png'),
             const SizedBox(height: 10),
             const Text(
-              'Não encontrou nada!',
+              'Nada encontrado!',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -250,104 +260,5 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     return content;
-  }
-
-  Widget buildStore(Store store) {
-    Color colorSelected = Colors.red;
-    Color colorUnselected = const Color(0xFF848599);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: ListTile(
-        leading: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: const Color(0xff7c94b6),
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-              color: const Color(0xFF935DD6),
-              width: 2,
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.asset(
-              store.avatar!,
-              width: 48,
-            ),
-          ),
-        ),
-        title: Text(
-          store.name!,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        subtitle: (Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgPicture.asset(
-                  'icons/rating.svg',
-                  width: 12,
-                ),
-                Text(
-                  ' ${store.rating!}',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFFEB884B),
-                  ),
-                ),
-                Text(
-                  ' • ${store.typeOfEstablishment!} • ${store.distance!} km',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF848599),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  '${store.averageDeliveryTime!} min • ',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF848599),
-                  ),
-                ),
-                Text(
-                  'R\$ ${store.shippingPrice!}',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF26B872),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        )),
-        trailing: IconButton(
-          onPressed: () {
-            setState(() {
-              store.favorite = !store.favorite!;
-            });
-          },
-          icon: SvgPicture.asset(
-            'icons/favorite.svg',
-            width: 24,
-            color: (store.favorite!) ? colorSelected : colorUnselected,
-          ),
-        ),
-      ),
-    );
   }
 }

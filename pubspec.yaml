@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^1.0.0
   carousel_slider: ^4.0.0
   smooth_page_indicator: ^1.0.0+2
+  email_validator: ^2.0.1
 
 dev_dependencies:
   flutter_test:

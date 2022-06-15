@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:test/modules/home/views/home_screen.dart';
-import 'package:test/modules/order/views/order_screen.dart';
-import 'package:test/modules/profile/views/profile_screen.dart';
-import 'package:test/modules/search/views/search_screen.dart';
+import 'package:test/modules/home/view/home_screen.dart';
+import 'package:test/modules/order/view/order_screen.dart';
+import 'package:test/modules/profile/view/profile_screen.dart';
+import 'package:test/modules/search/view/search_screen.dart';
+import 'package:test/shared/widgets/data/customer_data.dart';
 
 class StructureScreen extends StatefulWidget {
-  const StructureScreen({Key? key}) : super(key: key);
+  final CustomerModel customer;
+
+  const StructureScreen({
+    Key? key,
+    required this.customer,
+  }) : super(key: key);
 
   @override
   State<StructureScreen> createState() => _StructureScreenState();
 }
 
 class _StructureScreenState extends State<StructureScreen> {
-  int activeIndexScreen = 1;
+  int activeIndexScreen = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +61,9 @@ class _StructureScreenState extends State<StructureScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Olá, Danilo',
-                  style: TextStyle(
+                Text(
+                  'Olá, ${widget.customer.name}',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -68,9 +74,9 @@ class _StructureScreenState extends State<StructureScreen> {
                   children: [
                     SvgPicture.asset('icons/location.svg'),
                     const SizedBox(width: 5),
-                    const Text(
-                      'Rua Patrícia, 787 A',
-                      style: TextStyle(
+                    Text(
+                      widget.customer.address ?? 'Sem endereço cadastrado',
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
@@ -83,15 +89,6 @@ class _StructureScreenState extends State<StructureScreen> {
           ],
         ),
       ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: IconButton(
-            icon: SvgPicture.asset('icons/menu.svg'),
-            onPressed: () {},
-          ),
-        ),
-      ],
     );
   }
 
@@ -177,13 +174,13 @@ class _StructureScreenState extends State<StructureScreen> {
     Widget? content;
 
     if (activeIndexScreen == 0) {
-      content = const HomeScreen();
+      content = HomeScreen(customer: widget.customer);
     } else if (activeIndexScreen == 1) {
-      content = const SearchScreen();
+      content = SearchScreen(customer: widget.customer);
     } else if (activeIndexScreen == 2) {
-      content = const OrderScreen();
+      content = OrderScreen(customer: widget.customer);
     } else if (activeIndexScreen == 3) {
-      content = const ProfileScreen();
+      content = ProfileScreen(customer: widget.customer);
     }
 
     return content!;

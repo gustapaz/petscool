@@ -1,32 +1,43 @@
-class Store {
-  final String? avatar;
-  final String? name;
-  //final String? address;
-  final String? typeOfEstablishment;
-  final String? rating;
-  final String? distance;
-  final String? averageDeliveryTime;
-  final String? shippingPrice;
-  bool? favorite;
+class StoreModel {
+  String? id;
+  String avatar;
+  String name;
+  String address;
+  String cep;
+  String city;
+  String state;
+  String typeOfEstablishment;
+  String rating;
+  String distance;
+  String averageDeliveryTime;
+  String shippingPrice;
+  bool favorite;
 
-  Store({
-    this.avatar,
-    this.name,
-    //this.address,
-    this.typeOfEstablishment,
-    this.rating,
-    this.distance,
-    this.averageDeliveryTime,
-    this.shippingPrice,
-    this.favorite,
+  StoreModel({
+    this.id,
+    required this.avatar,
+    required this.name,
+    required this.address,
+    required this.cep,
+    required this.city,
+    required this.state,
+    required this.typeOfEstablishment,
+    required this.rating,
+    required this.distance,
+    required this.averageDeliveryTime,
+    required this.shippingPrice,
+    required this.favorite,
   });
 }
 
-List<Store> storeList = [
-  Store(
+List<StoreModel> storeList = [
+  StoreModel(
     avatar: 'images/toca_do_bicho.png',
     name: 'Toca do Bicho',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,9',
     distance: '6,2',
@@ -34,10 +45,13 @@ List<Store> storeList = [
     shippingPrice: '12,00',
     favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/vida_animal.png',
     name: 'Vida Animal',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,6',
     distance: '6',
@@ -45,20 +59,27 @@ List<Store> storeList = [
     shippingPrice: '8,00',
     favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/ponto_cao.png',
     name: 'Ponto Cão',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,9',
     distance: '4,2',
     averageDeliveryTime: '30 - 50',
-    shippingPrice: 'Grátis', favorite: false,
+    shippingPrice: 'Grátis',
+    favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/petz.png',
     name: 'Petz',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,9',
     distance: '5,4',
@@ -66,10 +87,13 @@ List<Store> storeList = [
     shippingPrice: '7,00',
     favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/pet_sa.png',
     name: 'Pet S/A',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,6',
     distance: '5',
@@ -77,20 +101,27 @@ List<Store> storeList = [
     shippingPrice: '6,00',
     favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/pet_shop_da_vivi.png',
     name: 'Pet Shop da Vivi',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,7',
     distance: '4,4',
     averageDeliveryTime: '20 - 45',
-    shippingPrice: 'Grátis', favorite: false,
+    shippingPrice: 'Grátis',
+    favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/bemase_pet_shop.png',
     name: 'Bemase Pet Shop',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '5,0',
     distance: '6,3',
@@ -98,14 +129,18 @@ List<Store> storeList = [
     shippingPrice: '8,00',
     favorite: false,
   ),
-  Store(
+  StoreModel(
     avatar: 'images/uniao_pet_shop.png',
     name: 'União Pet Shop',
-    //address: '',
+    address: 'Av. 1',
+    cep: '12345678',
+    city: 'Maringá',
+    state: 'Paraná',
     typeOfEstablishment: 'Pet Shop',
     rating: '4,8',
     distance: '3,9',
     averageDeliveryTime: '20 - 35',
-    shippingPrice: 'Grátis', favorite: false,
+    shippingPrice: 'Grátis',
+    favorite: false,
   ),
 ];

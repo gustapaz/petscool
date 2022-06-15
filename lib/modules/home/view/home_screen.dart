@@ -2,22 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:test/shared/widgets/build_store_list.dart';
+import 'package:test/shared/widgets/data/customer_data.dart';
 import 'package:test/shared/widgets/carousel_list.dart';
-import 'package:test/shared/widgets/store_list.dart';
+import 'package:test/shared/widgets/data/store_data.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final CustomerModel customer;
+
+  const HomeScreen({
+    Key? key,
+    required this.customer,
+  }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<Store> stores;
+  late List<StoreModel> stores;
   late List<Carousel> carousels;
   int activeIndexCarousel = 0;
   int activeIndexScreen = 0;
   bool activeFavorite = false;
+  Widget? content;
 
   @override
   void initState() {
@@ -29,6 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    content ??= homeContent();
+
+    return content!;
+  }
+
+  Widget homeContent() {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  height: 70 * stores.length.toDouble(),
+                  height: 80 * stores.length.toDouble(),
                   child: Expanded(
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -202,7 +216,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: ((context, index) {
                         final store = stores[index];
 
-                        return buildStore(store);
+                        return BuildStoreList(
+                          store: store,
+                          onTap: () {
+                            setState(() {
+                              content = storeContent(store);
+                            });
+                          },
+                        );
                       }),
                     ),
                   ),
@@ -283,101 +304,123 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildStore(Store store) {
-    Color colorSelected = Colors.red;
-    Color colorUnselected = const Color(0xFF848599);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: ListTile(
-        leading: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: const Color(0xff7c94b6),
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-              color: const Color(0xFF935DD6),
-              width: 2,
+  Widget storeContent(StoreModel store) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 40,
             ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.asset(
-              store.avatar!,
-              width: 48,
-            ),
-          ),
-        ),
-        title: Text(
-          store.name!,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        subtitle: (Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SvgPicture.asset(
-                  'icons/rating.svg',
-                  width: 12,
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      content = null;
+                    });
+                  },
+                  icon: SvgPicture.asset('icons/left_arrow.svg'),
                 ),
                 Text(
-                  ' ${store.rating!}',
+                  store.name,
                   style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFFEB884B),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
-                Text(
-                  ' • ${store.typeOfEstablishment!} • ${store.distance!} km',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF848599),
+                SvgPicture.asset('icons/store.svg'),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xffCED0E0),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset('images/toca_do_bicho_expanded.png'),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      'icons/location.svg',
+                      width: 24,
+                      color: const Color(0xFF642CA9),
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          store.address,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF545566),
+                          ),
+                        ),
+                        Text(
+                          '${store.city} - ${store.state}',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF545566),
+                          ),
+                        ),
+                        Text(
+                          store.cep,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF545566),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Container(
+                  height: 45,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: const Color(0xFFE6E7F0),
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'icons/rating.svg',
+                        width: 12,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        store.rating,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFEB884B),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            Row(
-              children: [
-                Text(
-                  '${store.averageDeliveryTime!} min • ',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF848599),
-                  ),
-                ),
-                Text(
-                  'R\$ ${store.shippingPrice!}',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF26B872),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        )),
-        trailing: IconButton(
-          onPressed: () {
-            setState(() {
-              store.favorite = !store.favorite!;
-            });
-          },
-          icon: SvgPicture.asset(
-            'icons/favorite.svg',
-            width: 24,
-            color: (store.favorite!) ? colorSelected : colorUnselected,
           ),
-        ),
+        ],
       ),
     );
   }

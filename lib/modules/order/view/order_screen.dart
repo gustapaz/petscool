@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:test/shared/widgets/data/customer_data.dart';
 
 class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
+  final CustomerModel customer;
+
+  const OrderScreen({
+    Key? key,
+    required this.customer,
+  }) : super(key: key);
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
